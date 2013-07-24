@@ -1,13 +1,23 @@
 <!doctype html>
-<html data-ng-app="cmModule">
+<html data-ng-app="mainModule">
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 		<link href="styles/custom.css" rel="stylesheet" />
-		<script src="js/Modules/cmModule/cmModule.js"></script>
-		<script src="js/Modules/cmModule/Controllers/WelcomeController.js"></script>
+		<script src="js/Modules/UserModule/UserModule.js"></script>
+		<script src="js/Modules/MainModule/MainModule.js"></script>
+		<!-- need to figure out how to load these lazily...whether it be using require
+			or something else to get these scripts later -->
+		<script src="js/Modules/MainModule/Controllers/WelcomeController.js"></script>
+		<script src="js/Modules/MainModule/Controllers/TestController.js"></script>
+		<script src="js/Modules/UserModule/Controllers/loginController.js"></script>
 	</head>
 	<body>
-		<div clas="centerDiv" data-ng-view=""></div>
+		<div class="mainWrapper">
+			<div class="loginWrapper" data-ng-controller="loginController">
+				{{name}}
+			</div>
+			<div class="centerWrapper" data-ng-view=""></div>
+		</div>
 	</body>
 
 </html>

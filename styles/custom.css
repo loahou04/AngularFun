@@ -1,6 +1,17 @@
 @charset 'UTF-8';
 
-.centerDiv {
+
+.mainWrapper {
+	width:100%;
+}
+
+.centerWrapper {
 	margin-right: auto;
 	margin-left: auto;
+	width:75%;
+}
+
+.loginWrapper {
+	float:right;
+	width:10%;
 }
