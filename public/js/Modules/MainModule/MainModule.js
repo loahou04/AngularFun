@@ -8,12 +8,12 @@ mainModule.config(function($routeProvider){
 		when("/",
 		{
 			controller : "WelcomeController",
-			templateUrl : "js/Modules/MainModule/Partials/WelcomePartial.html"
+			templateUrl : "client/js/Modules/MainModule/Partials/WelcomePartial.html"
 		})
 		.when("/test",
 		{
 			controller : "TestController",
-			templateUrl : "js/Modules/MainModule/Partials/TestPartial.html"
+			templateUrl : "client/js/Modules/MainModule/Partials/TestPartial.html"
 		})
 		.otherwise({redirectTo: "/"});
 });

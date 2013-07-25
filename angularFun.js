@@ -1,12 +1,22 @@
+
+
 var express = require("express");
 var http = require("http");
 var https = require("https");
 var MongoClient = require("mongodb").MongoClient;
 var app = express();
-var UserModule = require("./nodeApp/Users.js");
-var userModule;
+var UsersController = require("./nodeApp/UsersController.js");
+var usersController;
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
+var fs = require("fs");
+
+/*******NOTE*****
+ for some reason we dont need to send
+ resp.end() unless returning a file
+ this is something i need to look into
+ but everythign seems to be working right now...
+******NOTE******/
 
 
 // Simple route middleware to ensure user is authenticated.
@@ -19,12 +29,14 @@ function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}
-	res.redirect('/');
+
+	res.send(401);
+
 }
 
 function appStartUp() {
 
-	/** middleware **/
+	/*************************** middleware setup *************************/
 	passport.serializeUser(function(user, done) {
 		console.log("serializing");
 		done(null, user);
@@ -33,9 +45,11 @@ function appStartUp() {
 		console.log("deserializing");
 		done(null, user);
 	});
-	passport.use(new LocalStrategy(userModule.authenticateUserRequest));
+	passport.use(new LocalStrategy(usersController.authenticateUserRequest));
 
-	app.use(express.static(__dirname));
+	//reserved word so wrapping it this way so jslint will shutup
+	app.use("/client", express["static"](__dirname + "/public"));
+
 	// app.use(express.logger());
 	app.use(express.cookieParser());
 	app.use(express.bodyParser());
@@ -47,15 +61,30 @@ function appStartUp() {
 	app.use(passport.session());
 	app.use(app.router);
 
-	/** middleware **/
+	/*************************** middleware end *************************/
 
+
+	/*************************** ROUTES START *************************/
+	app.get("/", function(req, res) {
+		fs.readFile('./index.html', function (err, html) {
+			if (err) {
+				throw err;
+			}
+			res.writeHeader(200, {"Content-Type": "text/html"});
+			res.write(html);
+			//this end is required otherwise it will hang...
+			res.end();
+		});
+	});
 	app.post('/login',
 	passport.authenticate('local', { failureFlash: false }),
 		function(req, res) {
-			res.send({user:req.user});
+			res.send({username:req.user.username});
 	});
 
-	app.get("/users", ensureAuthenticated, userModule.getUser);
+	app.get('/me', ensureAuthenticated, usersController.getMe);
+
+	/*************************** ROUTES END *************************/
 
 	var port = process.env.PORT || 3000;
 	app.listen(port, function() {
@@ -65,7 +94,7 @@ function appStartUp() {
 
 MongoClient.connect("mongodb://localhost:27017/angularFun", function(err, db) {
 	if(!err) {
-		userModule = new UserModule(db);
+		usersController = new UsersController(db);
 		appStartUp();
 	}
 });
