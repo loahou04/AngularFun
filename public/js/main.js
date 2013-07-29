@@ -14,7 +14,8 @@ require.config({
 
 
 require(["angular",
-	"js/Module/MainModule/MainModule"], function(angular, mainModule, userModule){
+	"js/Module/MainModule/MainModule",
+	"js/User/UserModule"], function(angular, mainModule, userModule){
 
 
 });

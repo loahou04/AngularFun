@@ -3,19 +3,18 @@
 define(["angular",
 	"js/Welcome/WelcomeController",
 	"js/Test/TestController",
-	"js/User/LoginController",
-	"js/User/UserService"
-	], function(angular, welcomeController, testController, loginController, UserService) {
+	"js/User/UserModule"
+	], function(angular, welcomeController, testController, userModule) {
 
 		return (function() {
 
-			var mainModule = angular.module("mainModule", []);
+			var mainModule = angular.module("mainModule", ["userModule"]);
 
 			mainModule.config(["$routeProvider", function($routeProvider) {
 				$routeProvider.
 					when("/",
 					{
-						controller : welcomeController,
+						controller : ["$scope", "$rootScope", "userFactory", welcomeController],
 						templateUrl : "client/js/Welcome/WelcomePartial.html"
 					})
 					.when("/test",
@@ -30,7 +29,7 @@ define(["angular",
 			// }]);
 			// mainModule.controller("loginController", loginController);
 
-			angular.bootstrap(document, ["mainModule"]);
+			angular.bootstrap(document.getElementById("mainModuleId"), ["mainModule"]);
 
 		}());
 });

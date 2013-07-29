@@ -1,14 +1,15 @@
 /*global userModule, define */
 
 
-define(["js/User/UserService"], function() {
-    return function($scope, userService) {
+define([], function() {
+    return function($scope, $rootScope, userFactory) {
         $scope.showForm = true;
 
         function getMe() {
-            userService.getMe(function(error, result) {
+            userFactory.getMe(function(error, result) {
                 if(!error) {
-                    console.log(result);
+                    console.log("broadcasting");
+                    $rootScope.$emit("loginSuccessful", {result:result});
                 }
             });
         }
@@ -16,11 +17,12 @@ define(["js/User/UserService"], function() {
 
         $scope.submitForm = function() {
 
-            userService.login($scope.username, $scope.password, function(error, result) {
+            userFactory.login($scope.username, $scope.password, function(error, result) {
                 if(!error) {
                     console.log(result);
                     $scope.showForm = false;
                     getMe();
+
                 }
             });
         };
