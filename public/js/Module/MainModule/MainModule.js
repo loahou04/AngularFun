@@ -7,33 +7,31 @@ define(["angular",
 	"js/User/UserService"
 	], function(angular, welcomeController, testController, loginController, UserService) {
 
-		return {
-			initialize : function() {
+		return (function() {
 
-				var mainModule = angular.module("mainModule", []);
+			var mainModule = angular.module("mainModule", []);
 
-				mainModule.config(function($routeProvider) {
-					$routeProvider.
-						when("/",
-						{
-							controller : welcomeController,
-							templateUrl : "client/js/Welcome/WelcomePartial.html"
-						})
-						.when("/test",
-						{
-							controller : testController,
-							templateUrl : "client/js/Test/TestPartial.html"
-						})
-						.otherwise({redirectTo: "/"});
-				});
-				mainModule.factory("userService", ['$http', function($http) {
-					return new UserService($http);
-				}]);
-				mainModule.controller("loginController", loginController);
+			mainModule.config(["$routeProvider", function($routeProvider) {
+				$routeProvider.
+					when("/",
+					{
+						controller : welcomeController,
+						templateUrl : "client/js/Welcome/WelcomePartial.html"
+					})
+					.when("/test",
+					{
+						controller : testController,
+						templateUrl : "client/js/Test/TestPartial.html"
+					})
+					.otherwise({redirectTo: "/"});
+			}]);
+			// mainModule.factory("userService", ['$http', function($http) {
+			// 	return new UserService($http);
+			// }]);
+			// mainModule.controller("loginController", loginController);
 
+			angular.bootstrap(document, ["mainModule"]);
 
-				angular.bootstrap(document, ["mainModule"]);
-			}
-		};
+		}());
 });
 

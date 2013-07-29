@@ -15,7 +15,7 @@ require.config({
 
 require(["angular",
 	"js/Module/MainModule/MainModule"], function(angular, mainModule, userModule){
-	mainModule.initialize();
+
 
 });
 
