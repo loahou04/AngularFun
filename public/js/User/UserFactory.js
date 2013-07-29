@@ -3,11 +3,11 @@
 
 define([], function() {
 
-	return function($http) {
+	return function($http, $rootScope) {
 
 		var userFactory  = {};
 
-		//user.me = null;
+		userFactory.me = null;
 		userFactory.login = function(username, password, callback) {
 			var body = "username=" + username + "&password=" + password;
 			$http({
@@ -28,7 +28,8 @@ define([], function() {
 		};
 
 		userFactory.getMe = function(callback) {
-			//if(user.me === null) {
+
+			if(userFactory.me === null) {
 				$http({
 					url:'/me',
 					method: "get",
@@ -37,15 +38,19 @@ define([], function() {
 					}
 				}).success(function(data, status, headers, config) {
 					console.log("/me success");
+					userFactory.me = data;
+					$rootScope.$broadcast("loginSuccessful", {result:data});
+                    $rootScope.$emit("loginSuccessful", {result:data});
 					callback(null, data);
 
 				}).error(function(data, status) {
 					console.log("ERR");
 					callback(data, null);
 				});
-			//}
+				return;
+			}
 
-			//callback(null, user.me);
+			callback(null, userFactory.me);
 
 		};
 

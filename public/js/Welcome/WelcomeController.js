@@ -2,11 +2,17 @@
 
 
 define([], function() {
-	return function($scope, $rootScopej, userFactory) {
-		console.log(userFactory);
-		$scope.$on("loginSuccessful", function(event, data) {
-            console.log("EMIT", data.result);
+	return function($scope, $rootScope, userFactory) {
+		console.log(userFactory);//to show that i am inheriting from userModule
+
+		$rootScope.$on("loginSuccessful", function(event, data) {
+			$scope.someValue = "WelcomeController";
+			console.log("scope", data.result);
         });
-		//$scope.someValue = "WelcomeController";
+        $rootScope.$on("loginSuccessful", function(event, data) {
+			$scope.someValue = "WelcomeController";
+			console.log("rootScope", data.result);
+        });
+
 	};
 });

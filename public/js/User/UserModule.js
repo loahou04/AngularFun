@@ -9,7 +9,7 @@ define(["angular",
 		var userModule = angular.module("userModule", []);
 
 
-		userModule.factory("userFactory", userFactory);
+		userModule.factory("userFactory", ["$http", "$rootScope", userFactory]);
 
 		userModule.controller("loginController", ["$scope", "$rootScope", "userFactory", loginController]);
 
