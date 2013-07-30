@@ -40,7 +40,6 @@ define([], function() {
 					console.log("/me success");
 					userFactory.me = data;
 					$rootScope.$broadcast("loginSuccessful", {result:data});
-                    $rootScope.$emit("loginSuccessful", {result:data});
 					callback(null, data);
 
 				}).error(function(data, status) {
