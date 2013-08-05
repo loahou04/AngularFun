@@ -13,7 +13,7 @@ define([
 			welcomeModule.config(["$routeProvider", function($routeProvider) {
 				$routeProvider.when("/welcome",
 					{
-						controller : ["$scope", "$rootScope", welcomeController],
+						controller : ["$scope", "$rootScope", "userFactory", welcomeController],
 						templateUrl : "client/js/Modules/Welcome/WelcomePartial.html"
 					});
 			}]);

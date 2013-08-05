@@ -5,10 +5,26 @@ define([], function() {
 	return function($scope, $rootScope, userFactory) {
 		console.log(userFactory);//to show that i am inheriting from userModule
 
-		$scope.$on("loginSuccessful", function(event, data) {
+		$scope.$on("userData", function(event, data) {
 			$scope.someValue = data.result.username;
-			console.log("scope", data.result);
 		});
+
+		$scope.$on("logoutSuccessful", function(event) {
+			$scope.someValue = "";
+		});
+
+		$scope.getMeData = function() {
+			console.log("GETTING ME");
+			console.log(userFactory);
+			userFactory.getMe(function(err, result) {
+				if(!err) {
+					console.log(result);
+				}
+				else {
+					console.log(err);
+				}
+			});
+		};
 
 	};
 });

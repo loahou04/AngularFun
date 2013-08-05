@@ -25,19 +25,19 @@ module.exports = function(db) {
 				return done(null, false, {message:"Password did not match"});
 			}
 			console.log("user authenticated");
-			return done(null, user.username);
+			return done(null, user);
 		});
 
 	};
 
 	this.getMe = function(req, resp) {
 
-		users.findOne({username:req.user}, function(err, user) {
+		users.findOne({username:req.user.username}, function(err, user) {
 
 			if(err) {
 				resp.send(500);
 			}
-			if(!user) {
+			if(!user || user === null) {
 				resp.send(404);
 			}
 
@@ -54,6 +54,12 @@ module.exports = function(db) {
 			//for some reason sending resp.end() makes it hang
 			//but not sending it makes it end...weird...i'll look into it later
 		});
+	};
+
+	this.logout = function(req, resp) {
+		req.logout();
+		resp.status(200);
+		resp.end();
 	};
 
 };

@@ -3,20 +3,17 @@
 define(["angular",
 	"js/Modules/Welcome/WelcomeModule",
 	"js/Modules/Test/TestModule",
-	"js/Modules/User/UserModule"
-	], function(angular, welcomeModule, testModule, userModule) {
+	"js/Modules/User/UserModule",
+	"js/Modules/Dashboard/DashboardModule"
+	], function(angular, welcomeModule, testModule, userModule, dashboardModule) {
 
 		return (function() {
 
-			var mainModule = angular.module("mainModule", ["welcomeModule", "testModule", "userModule"]);
+			var mainModule = angular.module("mainModule", ["welcomeModule", "testModule", "userModule", "dashboardModule"]);
 
 			mainModule.config(["$routeProvider", function($routeProvider) {
 				$routeProvider.otherwise({redirectTo: "/welcome"});
 			}]);
-			// mainModule.factory("userService", ['$http', function($http) {
-			// 	return new UserService($http);
-			// }]);
-			// mainModule.controller("loginController", loginController);
 
 			angular.bootstrap(document, ["mainModule"]);
 

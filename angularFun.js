@@ -76,11 +76,34 @@ function appStartUp() {
 			res.end();
 		});
 	});
-	app.post('/login',
-	passport.authenticate('local', { failureFlash: false }),
-		function(req, res) {
-			res.send({username:req.user.username});
+
+	/********************** login specific middleware route ********************/
+	app.post('/login', function(req, res, next) {
+	  passport.authenticate('local', function(err, user, info) {
+			if (err) {
+				return next(err);
+			}
+			if (!user) {
+				return res.redirect('/login');
+			}
+			//manually calling login of the request object
+			req.login(user, function(err) {
+				if (err) {
+					return next(err);
+				}
+				res.cookie("username", user.username, {maxAge:30000000});
+				var userInfo = {
+					_id : user._id,
+					username : user.username
+				};
+				console.log(userInfo);
+				return res.json(200, userInfo);
+			});
+		})(req, res, next);
 	});
+
+
+	app.post('/logout', usersController.logout);
 
 	app.get('/me', ensureAuthenticated, usersController.getMe);
 

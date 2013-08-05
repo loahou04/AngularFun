@@ -8,6 +8,7 @@ define([], function() {
 		var userFactory  = {};
 
 		userFactory.me = null;
+
 		userFactory.login = function(username, password, callback) {
 			var body = "username=" + username + "&password=" + password;
 			$http({
@@ -18,7 +19,8 @@ define([], function() {
 					'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 				}
 			}).success(function(data, status, headers, config) {
-				console.log("/loging success");
+				console.log("/login success");
+				$rootScope.$broadcast("userData", {result:data});
 				callback(null, data);
 
 			}).error(function(data, status) {
@@ -39,7 +41,7 @@ define([], function() {
 				}).success(function(data, status, headers, config) {
 					console.log("/me success");
 					userFactory.me = data;
-					$rootScope.$broadcast("loginSuccessful", {result:data});
+					$rootScope.$broadcast("userData", {result:data});
 					callback(null, data);
 
 				}).error(function(data, status) {
@@ -51,6 +53,22 @@ define([], function() {
 
 			callback(null, userFactory.me);
 
+		};
+
+		userFactory.logout = function(callback) {
+			$http({
+				url:'/logout',
+				method:"post"
+			}).success(function(data, status, headers, config) {
+				console.log("successful logout");
+				userFactory.me = null;
+				$rootScope.$broadcast("logoutSuccessful");
+				callback(null, {});
+			})
+			.error(function(data, status) {
+				console.log("ERROR IN LOGOUT");
+				callback(data, null);
+			});
 		};
 
 		return userFactory;

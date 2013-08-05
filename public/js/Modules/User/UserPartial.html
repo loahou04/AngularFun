@@ -1,0 +1,19 @@
+<div data-ng-controller="userController" class="loginPartialContainer" data-ng-init="init()">
+	<form data-ng-show="showForm" data-ng-submit="submitForm()">
+		<div class="loginArea">
+			<label>Username:</label>
+			<input type="text" data-ng-model="username"/>
+			<label>Password:</label>
+			<input type="password" data-ng-model="password"/>
+			<input type="submit" value="Submit"/>
+		</div>
+		<div class="registerArea">
+			<a href="#/register">Sign up!</a>
+		</div>
+	</form>
+	<div data-ng-show="!showForm">
+		Hello {{username}}
+
+		<button type="button" data-ng-click="logout()">logout</button>
+	</div>
+</div>

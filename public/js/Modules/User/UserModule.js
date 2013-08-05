@@ -1,15 +1,15 @@
 /*global angular, define, document*/
 
 define(["angular",
-	"js/Modules/User/LoginController",
-	"js/Modules/User/UserFactory"], function(angular, loginController, userFactory) {
+	"js/Modules/User/UserController",
+	"js/Modules/User/UserFactory"], function(angular, userController, userFactory) {
 
 	return (function(){
 
 		var userModule = angular.module("userModule", []);
 		userModule.factory("userFactory", ["$http", "$rootScope", userFactory]);
 
-		userModule.controller("loginController", ["$scope", "$rootScope", "userFactory", loginController]);
+		userModule.controller("userController", ["$scope", "$rootScope", "userFactory", userController]);
 
 	}());
 
