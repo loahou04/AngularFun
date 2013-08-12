@@ -1,25 +1,26 @@
-/*global userModule, define */
+/*global userModule, define, document */
 
 
 define([], function() {
 	return function($scope, $rootScope, userFactory) {
-		$scope.showForm = false;
+		$scope.showForm = true;
 
 		$scope.init = function() {
 
-			if(userFactory.me !== null) {
-				$scope.username = userFactory.me.username;
+			if($rootScope.me === null || $rootScope.me === undefined) {
+				//below here is really for a page refresh
+				userFactory.getMe(function(err, result) {
+					if(!err) {
+						$scope.username = result.username;
+						$scope.showForm = false;
+					}
+				});
 				return;
 			}
 
-			userFactory.getMe(function(err, result) {
-				if(!err) {
-					$scope.showForm = false;
-					$scope.username = result.username;
-					return;
-				}
-				$scope.showForm = true;
-			});
+			$scope.username = $rootScope.me;
+			$scope.showForm = false;
+
 		};
 
 		$scope.submitForm = function() {

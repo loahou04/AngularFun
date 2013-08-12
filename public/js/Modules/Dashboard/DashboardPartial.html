@@ -1,3 +1,14 @@
 <div class="dashboardContainer" data-ng-init="init()">
-	<div data-ng-show="userValid"></div>
+	<div data-ng-show="userValid">
+		<form>
+			<div>
+				<label>Transaction Type:</label>
+				<select data-ng-model="transactionTypes"
+			</div>
+		</form>
+	</div>
+	<!-- show login information or register information -->
+	<div data-ng-show="!userValid">
+
+	</div>
 </div>

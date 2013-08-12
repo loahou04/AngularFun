@@ -7,8 +7,6 @@ define([], function() {
 
 		var userFactory  = {};
 
-		userFactory.me = null;
-
 		userFactory.login = function(username, password, callback) {
 			var body = "username=" + username + "&password=" + password;
 			$http({
@@ -20,6 +18,7 @@ define([], function() {
 				}
 			}).success(function(data, status, headers, config) {
 				console.log("/login success");
+				console.log(data);
 				$rootScope.$broadcast("userData", {result:data});
 				callback(null, data);
 
@@ -31,7 +30,7 @@ define([], function() {
 
 		userFactory.getMe = function(callback) {
 
-			if(userFactory.me === null) {
+			if($rootScope.me === null || $rootScope.me === undefined) {
 				$http({
 					url:'/me',
 					method: "get",
@@ -40,7 +39,7 @@ define([], function() {
 					}
 				}).success(function(data, status, headers, config) {
 					console.log("/me success");
-					userFactory.me = data;
+					$rootScope.me = data;
 					$rootScope.$broadcast("userData", {result:data});
 					callback(null, data);
 
@@ -51,7 +50,7 @@ define([], function() {
 				return;
 			}
 
-			callback(null, userFactory.me);
+			//callback(null, $rootScope.me);
 
 		};
 
@@ -61,7 +60,7 @@ define([], function() {
 				method:"post"
 			}).success(function(data, status, headers, config) {
 				console.log("successful logout");
-				userFactory.me = null;
+				$rootScope.me = null;
 				$rootScope.$broadcast("logoutSuccessful");
 				callback(null, {});
 			})

@@ -25,14 +25,14 @@ module.exports = function(db) {
 				return done(null, false, {message:"Password did not match"});
 			}
 			console.log("user authenticated");
-			return done(null, user);
+			return done(null, user.username);
 		});
 
 	};
 
 	this.getMe = function(req, resp) {
 
-		users.findOne({username:req.user.username}, function(err, user) {
+		users.findOne({username:req.user}, function(err, user) {
 
 			if(err) {
 				resp.send(500);

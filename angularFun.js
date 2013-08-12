@@ -79,7 +79,7 @@ function appStartUp() {
 
 	/********************** login specific middleware route ********************/
 	app.post('/login', function(req, res, next) {
-	  passport.authenticate('local', function(err, user, info) {
+		passport.authenticate('local', function(err, user, info) {
 			if (err) {
 				return next(err);
 			}
@@ -91,10 +91,9 @@ function appStartUp() {
 				if (err) {
 					return next(err);
 				}
-				res.cookie("username", user.username, {maxAge:30000000});
+				console.log(user);
 				var userInfo = {
-					_id : user._id,
-					username : user.username
+					username : user
 				};
 				console.log(userInfo);
 				return res.json(200, userInfo);
